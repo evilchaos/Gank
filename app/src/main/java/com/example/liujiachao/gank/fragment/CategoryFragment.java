@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.liujiachao.gank.R;
+import com.example.liujiachao.gank.adapter.MyFragmentAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,14 +67,18 @@ public class CategoryFragment extends BaseFragment {
         List<Fragment> fragments = new ArrayList<>();
 
         fragments.add(ListFragment.newInstance(ListFragment.IOS_TYPE));
-        fragments.add(ListFragment.newInstance(ListFragment.ANDDORID_TYPE));
+        fragments.add(ListFragment.newInstance(ListFragment.ANDORID_TYPE));
         fragments.add(ListFragment.newInstance(ListFragment.WEB_TYPE));
         fragments.add(ListFragment.newInstance(ListFragment.APP_TYPE));
         fragments.add(ListFragment.newInstance(ListFragment.REST_TYPE));
         fragments.add(ListFragment.newInstance(ListFragment.EXTEND_TYPE));
         fragments.add(new GirlFragment());
 
-        //FragmentPagerAdapter
+        MyFragmentAdapter adapter = new MyFragmentAdapter(
+                getChildFragmentManager(),fragments,titles);
+        viewPager.setAdapter(adapter);
+        mTabLayout.setupWithViewPager(viewPager);
+        mTabLayout.setTabsFromPagerAdapter(adapter);
     }
 
     @Override

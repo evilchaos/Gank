@@ -14,7 +14,7 @@ public class ListFragment extends BaseFragment {
     private int type;
 
     public static final int IOS_TYPE = 0;
-    public static final int ANDDORID_TYPE = 1;
+    public static final int ANDORID_TYPE = 1;
     public static final int WEB_TYPE = 2;
     public static final int APP_TYPE = 3;
     public static final int REST_TYPE = 4;
