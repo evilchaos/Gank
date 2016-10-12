@@ -2,10 +2,9 @@ package com.example.liujiachao.gank.fragment;
 
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +12,9 @@ import android.view.ViewGroup;
 
 import com.example.liujiachao.gank.R;
 import com.example.liujiachao.gank.adapter.MyFragmentAdapter;
+import com.example.liujiachao.gank.util.Constant;
+
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +56,6 @@ public class CategoryFragment extends BaseFragment {
         titles.add("App");
         titles.add("休息视频");
         titles.add("拓展资源");
-        titles.add("福利");
 
         mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(0)));
         mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(1)));
@@ -62,17 +63,15 @@ public class CategoryFragment extends BaseFragment {
         mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(3)));
         mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(4)));
         mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(5)));
-        mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(6)));
 
         List<Fragment> fragments = new ArrayList<>();
 
-        fragments.add(ListFragment.newInstance(ListFragment.IOS_TYPE));
-        fragments.add(ListFragment.newInstance(ListFragment.ANDORID_TYPE));
-        fragments.add(ListFragment.newInstance(ListFragment.WEB_TYPE));
-        fragments.add(ListFragment.newInstance(ListFragment.APP_TYPE));
-        fragments.add(ListFragment.newInstance(ListFragment.REST_TYPE));
-        fragments.add(ListFragment.newInstance(ListFragment.EXTEND_TYPE));
-        fragments.add(new GirlFragment());
+        fragments.add(ListFragment.newInstance(Constant.IOS_TYPE));
+        fragments.add(ListFragment.newInstance(Constant.ANDORID_TYPE));
+        fragments.add(ListFragment.newInstance(Constant.WEB_TYPE));
+        fragments.add(ListFragment.newInstance(Constant.APP_TYPE));
+        fragments.add(ListFragment.newInstance(Constant.REST_TYPE));
+        fragments.add(ListFragment.newInstance(Constant.EXTEND_TYPE));
 
         MyFragmentAdapter adapter = new MyFragmentAdapter(
                 getChildFragmentManager(),fragments,titles);

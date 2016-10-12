@@ -1,10 +1,11 @@
 package com.example.liujiachao.gank.fragment;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Created by liujiachao on 2016/10/9.
@@ -12,13 +13,6 @@ import android.view.ViewGroup;
 public class ListFragment extends BaseFragment {
 
     private int type;
-
-    public static final int IOS_TYPE = 0;
-    public static final int ANDORID_TYPE = 1;
-    public static final int WEB_TYPE = 2;
-    public static final int APP_TYPE = 3;
-    public static final int REST_TYPE = 4;
-    public static final int EXTEND_TYPE = 5;
 
    public static ListFragment newInstance(int type) {
        ListFragment fragment = new ListFragment();
@@ -36,6 +30,9 @@ public class ListFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        type = getArguments().getInt("type");
+
+
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
