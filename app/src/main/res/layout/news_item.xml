@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:background="@android:color/white"
+    android:padding="10dp"
+    >
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:src="@drawable/round"
+        android:layout_marginRight="5dp"
+        android:id = "@+id/img_oval"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id = "@+id/title"
+        android:layout_toRightOf="@+id/img_oval"
+        android:textColor="@android:color/black"
+        android:text="测试专用语句"
+        android:textSize="17sp"
+        />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/title"
+        android:layout_alignParentBottom="true"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id = "@+id/tv_time"
+            android:textSize="12sp"
+            android:text="今天"
+            android:layout_marginRight="12dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id = "@+id/tv_author"
+            android:textSize="12sp"
+            android:text="刘家超"
+            android:layout_toRightOf="@+id/tv_time"
+            android:layout_marginRight="12dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id = "@+id/tv_category"
+            android:textSize="12sp"
+            android:text="Android"
+            android:layout_toRightOf="@+id/tv_author"
+            />
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

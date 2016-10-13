@@ -15,9 +15,9 @@ import okhttp3.Response;
 public class NetworkUtils {
     public final static int pageSize = 20;
     public static final int GET_DURATION = 2000;
-    private long lastTime;
+    public static long lastTime;
 
-    public void getGankNews(final int type ,final int page,final OnLoadDataListener listener) {
+    public static void getGankNews(final int type ,final int page,final OnLoadDataListener listener) {
         lastTime = System.currentTimeMillis();
         final Callback<GankData> callback = new Callback<GankData>() {
             @Override
@@ -43,7 +43,7 @@ public class NetworkUtils {
 
     }
 
-    private void requestData(int type,int page) {
+    public static void requestData(int type,int page) {
 
         switch (type) {
             case Constant.ANDORID_TYPE:
