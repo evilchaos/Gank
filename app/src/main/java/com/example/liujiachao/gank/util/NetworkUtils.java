@@ -17,7 +17,7 @@ public class NetworkUtils {
     public static final int GET_DURATION = 2000;
     public static long lastTime;
 
-    public static void getGankNews(final int type ,final int page,final OnLoadDataListener listener) {
+    public static void getGankNews(final int type ,final int page,final boolean isRefresh,final OnLoadDataListener listener) {
         lastTime = System.currentTimeMillis();
         final Callback<GankData> callback = new Callback<GankData>() {
             @Override
@@ -34,7 +34,7 @@ public class NetworkUtils {
 
             @Override
             public void onResponse(GankData response, int id) {
-                listener.OnLoadDataSuccess(type,response);
+                listener.OnLoadDataSuccess(type,isRefresh,response);
 
             }
         };

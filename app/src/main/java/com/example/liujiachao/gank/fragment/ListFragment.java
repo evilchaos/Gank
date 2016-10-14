@@ -1,26 +1,83 @@
 package com.example.liujiachao.gank.fragment;
 
+
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.jetbrains.annotations.Nullable;
+import com.example.liujiachao.gank.R;
+import com.example.liujiachao.gank.adapter.GankAdapter;
+import com.example.liujiachao.gank.entity.GankData;
+import com.example.liujiachao.gank.entity.NewsItem;
+import com.example.liujiachao.gank.inteface.OnLoadDataListener;
+import com.example.liujiachao.gank.util.Constant;
+import com.example.liujiachao.gank.util.NetworkUtils;
+
+import java.util.List;
 
 /**
- * Created by liujiachao on 2016/10/9.
+ * Created by liujiachao on 2016/10/12.
  */
-public class ListFragment extends BaseFragment {
+public class ListFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener,OnLoadDataListener {
+
+    private final static int RECEIVER_SUCCESS = 0;
+    private int page;
+    private static Handler mHandler;
+
+    private View mView;
+    private RecyclerView recyclerView;
+    private GankAdapter adapter;
+    private LinearLayoutManager manager;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     private int type;
 
-   public static ListFragment newInstance(int type) {
-       ListFragment fragment = new ListFragment();
-       Bundle bundle = new Bundle();
-       bundle.putInt("type",type);
-       fragment.setArguments(bundle);
-       return fragment;
-   }
+    public static ListFragment newInstance(int type) {
+        Bundle bundle = new Bundle();
+        bundle.putInt(Constant.TYPE,type);
+        ListFragment fragment = new ListFragment();
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        initViews();
+    }
+
+    private void initViews() {
+        swipeRefreshLayout = (SwipeRefreshLayout)mView.findViewById(R.id.swipe_refresh);
+        swipeRefreshLayout.setOnRefreshListener(this);
+        recyclerView = (RecyclerView)mView.findViewById(R.id.recycle);
+        adapter = new GankAdapter();
+        recyclerView.setAdapter(adapter);
+        manager = new LinearLayoutManager(recyclerView.getContext(),LinearLayoutManager.VERTICAL,false);
+        recyclerView.setLayoutManager(manager);
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    OnListScrolled();
+                }
+            }
+        });
+
+        type = getArguments().getInt(Constant.TYPE);
+        receiveData();
+        onRefresh();
+    }
 
     @Override
     public void onStart() {
@@ -30,19 +87,56 @@ public class ListFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        type = getArguments().getInt("type");
+        mView = inflater.inflate(R.layout.list_fragment,container,false);
+        return mView;
+    }
 
-
-        return super.onCreateView(inflater, container, savedInstanceState);
+    private void OnListScrolled() {
+        int lastVisiPos = manager.findLastVisibleItemPosition();
+        if (lastVisiPos + 1 == adapter.getItemCount() ) {
+            NetworkUtils.getGankNews(type,page,false,this);
+        }
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onRefresh() {
+        page = 1;
+        NetworkUtils.getGankNews(Constant.ANDORID_TYPE, page, true, this);
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void OnLoadDataSuccess(int type,boolean isRefresh, GankData gankData) {
+        Message msg = Message.obtain();
+        msg.what = RECEIVER_SUCCESS;
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("android_news", gankData);
+        bundle.putBoolean("isRefresh", isRefresh);
+        msg.setData(bundle);
+        mHandler.sendMessage(msg);
+    }
+
+
+    protected void receiveData() {
+        mHandler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                switch (msg.what) {
+                    case RECEIVER_SUCCESS:
+                        boolean isRefresh = msg.getData().getBoolean("isRefresh");
+                        GankData gankData = (GankData)msg.getData().getSerializable("android_news");
+                        List<NewsItem> newsItems = gankData.getResults();
+                        //加载最新数据还是添加老数据
+                        if (isRefresh) {
+                          //更新数据源
+                            adapter.updateData(newsItems);
+                        }  else {
+                            //向数据源添加数据
+                            adapter.addData(newsItems);
+                        }
+                        page++;
+                }
+                super.handleMessage(msg);
+            }
+        };
     }
 }

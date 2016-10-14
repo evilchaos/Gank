@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * Created by liujiachao on 2016/10/8.
  */
-public class CategoryFragment extends BaseFragment {
+public class CategoryFragment extends Fragment {
     private ViewPager viewPager;
     private TabLayout mTabLayout;
     private View mView;
