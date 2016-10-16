@@ -20,6 +20,7 @@ import com.example.liujiachao.gank.entity.NewsItem;
 import com.example.liujiachao.gank.inteface.OnLoadDataListener;
 import com.example.liujiachao.gank.util.Constant;
 import com.example.liujiachao.gank.util.NetworkUtils;
+import com.example.liujiachao.gank.util.SPUtil;
 
 import java.util.List;
 
@@ -39,6 +40,8 @@ public class ListFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private SwipeRefreshLayout swipeRefreshLayout;
 
     private int type;
+//    private int firstPosition;
+//    private int lastPosition;
 
     public static ListFragment newInstance(int type) {
         Bundle bundle = new Bundle();
@@ -52,6 +55,27 @@ public class ListFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initViews();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        page = SPUtil.getInt(type + Constant.PAGE);
+//        lastPosition = SPUtil.getInt(type + Constant.POSITION);
+//        recyclerView.scrollToPosition(lastPosition > 0 ? lastPosition:0);
+    }
+
+    @Override
+    public void onPause() {
+        //firstPosition = manager.findFirstVisibleItemPosition();
+        super.onPause();
+        //SPUtil.save(type + Constant.POSITION, firstPosition);
+        SPUtil.save(type + Constant.PAGE,page);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
     }
 
     private void initViews() {
@@ -92,8 +116,9 @@ public class ListFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
     private void OnListScrolled() {
-        int lastVisiPos = manager.findLastVisibleItemPosition();
-        if (lastVisiPos + 1 == adapter.getItemCount() ) {
+        //firstPosition = manager.findFirstVisibleItemPosition();
+        int lastPosition = manager.findLastVisibleItemPosition();
+        if (lastPosition + 1 == adapter.getItemCount() ) {
             NetworkUtils.getGankNews(type,page,false,this);
         }
     }
@@ -101,7 +126,7 @@ public class ListFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     @Override
     public void onRefresh() {
         page = 1;
-        NetworkUtils.getGankNews(Constant.ANDORID_TYPE, page, true, this);
+        NetworkUtils.getGankNews(type, page, true, this);
     }
 
     @Override
@@ -109,7 +134,7 @@ public class ListFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         Message msg = Message.obtain();
         msg.what = RECEIVER_SUCCESS;
         Bundle bundle = new Bundle();
-        bundle.putSerializable("android_news", gankData);
+        bundle.putSerializable("news", gankData);
         bundle.putBoolean("isRefresh", isRefresh);
         msg.setData(bundle);
         mHandler.sendMessage(msg);
@@ -123,7 +148,7 @@ public class ListFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 switch (msg.what) {
                     case RECEIVER_SUCCESS:
                         boolean isRefresh = msg.getData().getBoolean("isRefresh");
-                        GankData gankData = (GankData)msg.getData().getSerializable("android_news");
+                        GankData gankData = (GankData)msg.getData().getSerializable("news");
                         List<NewsItem> newsItems = gankData.getResults();
                         //加载最新数据还是添加老数据
                         if (isRefresh) {

@@ -14,4 +14,5 @@ public class Constant {
 
     public static final String TYPE = "type";
     public static final String PAGE = "page";
+    public static final String POSITION = "position";
 }
