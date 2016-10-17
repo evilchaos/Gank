@@ -60,7 +60,7 @@ public class ListFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     @Override
     public void onResume() {
         super.onResume();
-        page = SPUtil.getInt(type + Constant.PAGE);
+       // page = SPUtil.getInt(type + Constant.PAGE);
 //        lastPosition = SPUtil.getInt(type + Constant.POSITION);
 //        recyclerView.scrollToPosition(lastPosition > 0 ? lastPosition:0);
     }
@@ -70,7 +70,7 @@ public class ListFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         //firstPosition = manager.findFirstVisibleItemPosition();
         super.onPause();
         //SPUtil.save(type + Constant.POSITION, firstPosition);
-        SPUtil.save(type + Constant.PAGE,page);
+        //SPUtil.save(type + Constant.PAGE,page);
     }
 
     @Override
@@ -141,7 +141,7 @@ public class ListFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
 
-    protected void receiveData() {
+    private void receiveData() {
         mHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
