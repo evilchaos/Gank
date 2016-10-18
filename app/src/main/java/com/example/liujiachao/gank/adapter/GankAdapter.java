@@ -44,8 +44,7 @@ public class GankAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public void updateData(List<NewsItem> items) {
         newsItemList.clear();
-        newsItemList.addAll(items);
-        notifyDataSetChanged();
+        addData(items);
     }
 
     public void addData(List<NewsItem> items) {

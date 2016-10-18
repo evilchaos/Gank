@@ -64,8 +64,7 @@ public class WelfareAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     public void updateData(List<NewsItem> items) {
         pictures.clear();
-        pictures.addAll(items);
-        notifyDataSetChanged();
+        addData(items);
     }
 
     public void addData(List<NewsItem> items) {
