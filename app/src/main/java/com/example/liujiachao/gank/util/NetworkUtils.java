@@ -1,6 +1,8 @@
 package com.example.liujiachao.gank.util;
 
+import com.example.liujiachao.gank.entity.DailyData;
 import com.example.liujiachao.gank.entity.GankData;
+import com.example.liujiachao.gank.inteface.OnLoadDailyContentListener;
 import com.example.liujiachao.gank.inteface.OnLoadDataListener;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
@@ -41,6 +43,29 @@ public class NetworkUtils {
 
         requestData(type,page);
 
+    }
+
+    public static void getDailyNews(final String date, final OnLoadDailyContentListener listener) {
+        lastTime = System.currentTimeMillis();
+        final Callback<DailyData> callback = new Callback<DailyData>() {
+            @Override
+            public DailyData parseNetworkResponse(Response response, int id) throws Exception {
+                return Json.parseDailyNews(response.body().string());
+            }
+
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                if(System.currentTimeMillis() - lastTime < GET_DURATION) {
+                    OkHttpUtils.get().url(GankApi.daily_url + date);
+                }
+            }
+
+            @Override
+            public void onResponse(DailyData response, int id) {
+                listener.OnLoadDailyContentSuccess(response);
+            }
+        };
+        OkHttpUtils.get().url(GankApi.daily_url + date);
     }
 
     public static void requestData(int type,int page) {

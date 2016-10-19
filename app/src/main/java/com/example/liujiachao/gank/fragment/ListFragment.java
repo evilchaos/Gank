@@ -28,8 +28,6 @@ import java.util.List;
  * Created by liujiachao on 2016/10/12.
  */
 public class ListFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener,OnLoadDataListener {
-
-    private final static int RECEIVER_SUCCESS = 0;
     private int page;
     private static Handler mHandler;
 
@@ -132,7 +130,7 @@ public class ListFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     @Override
     public void OnLoadDataSuccess(int type,boolean isRefresh, GankData gankData) {
         Message msg = Message.obtain();
-        msg.what = RECEIVER_SUCCESS;
+        msg.what = Constant.RECEIVER_SUCCESS;
         Bundle bundle = new Bundle();
         bundle.putSerializable("news", gankData);
         bundle.putBoolean("isRefresh", isRefresh);
@@ -146,7 +144,7 @@ public class ListFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             @Override
             public void handleMessage(Message msg) {
                 switch (msg.what) {
-                    case RECEIVER_SUCCESS:
+                    case Constant.RECEIVER_SUCCESS:
                         boolean isRefresh = msg.getData().getBoolean("isRefresh");
                         GankData gankData = (GankData)msg.getData().getSerializable("news");
                         List<NewsItem> newsItems = gankData.getResults();

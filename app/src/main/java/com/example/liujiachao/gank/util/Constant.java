@@ -11,6 +11,7 @@ public class Constant {
     public static final int REST_TYPE = 4;
     public static final int EXTEND_TYPE = 5;
     public static final int WELFARE_TYPE = 6;
+    public static final int RECEIVER_SUCCESS = 7;
 
     public static final String TYPE = "type";
     public static final String PAGE = "page";

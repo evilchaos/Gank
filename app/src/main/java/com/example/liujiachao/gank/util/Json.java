@@ -3,6 +3,7 @@ package com.example.liujiachao.gank.util;
 import android.util.JsonReader;
 import android.util.JsonWriter;
 
+import com.example.liujiachao.gank.entity.DailyData;
 import com.example.liujiachao.gank.entity.GankData;
 import com.example.liujiachao.gank.entity.RealmString;
 import com.google.gson.ExclusionStrategy;
@@ -63,4 +64,10 @@ public class Json {
     public static GankData parseGankNews(String gankNews) {
         return mGson.fromJson(gankNews, GankData.class);
     }
+
+    public static DailyData parseDailyNews(String dailyNews) {
+        return mGson.fromJson(dailyNews,DailyData.class);
+    }
+
+
 }

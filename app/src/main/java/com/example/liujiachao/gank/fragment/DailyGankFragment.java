@@ -30,7 +30,6 @@ import java.util.List;
  */
 public class DailyGankFragment extends Fragment implements OnLoadDataListener {
 
-    private final static int RECEIVER_SUCCESS = 0;
     private View mView;
     private RecyclerView recyclerView;
     private DailyAdapter adapter;
@@ -104,7 +103,7 @@ public class DailyGankFragment extends Fragment implements OnLoadDataListener {
             @Override
             public void handleMessage(Message msg) {
                 switch (msg.what) {
-                    case RECEIVER_SUCCESS:
+                    case Constant.RECEIVER_SUCCESS:
                         boolean isRefresh = msg.getData().getBoolean("isRefresh");
                         GankData gankData = (GankData)msg.getData().getSerializable("news");
                         List<NewsItem> newsItems = gankData.getResults();
@@ -126,7 +125,7 @@ public class DailyGankFragment extends Fragment implements OnLoadDataListener {
     @Override
     public void OnLoadDataSuccess(int type, boolean isRefresh, GankData gankData) {
         Message msg = Message.obtain();
-        msg.what = RECEIVER_SUCCESS;
+        msg.what = Constant.RECEIVER_SUCCESS;
         Bundle bundle = new Bundle();
         bundle.putSerializable("news", gankData);
         bundle.putBoolean("isRefresh", isRefresh);

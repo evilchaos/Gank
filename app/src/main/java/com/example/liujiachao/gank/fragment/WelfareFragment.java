@@ -26,8 +26,6 @@ import java.util.List;
  * Created by liujiachao on 2016/10/8.
  */
 public class WelfareFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener,OnLoadDataListener{
-
-    private final static int RECEIVER_SUCCESS = 0;
     private static Handler mHandler;
     private WelfareAdapter adapter;
     private View mView;
@@ -112,7 +110,7 @@ public class WelfareFragment extends Fragment implements SwipeRefreshLayout.OnRe
     @Override
     public void OnLoadDataSuccess(int type, boolean isRefresh, GankData gankData) {
         Message msg = Message.obtain();
-        msg.what = RECEIVER_SUCCESS;
+        msg.what = Constant.RECEIVER_SUCCESS;
         Bundle bundle = new Bundle();
         bundle.putSerializable("news", gankData);
         bundle.putBoolean("isRefresh", isRefresh);
@@ -126,7 +124,7 @@ public class WelfareFragment extends Fragment implements SwipeRefreshLayout.OnRe
             @Override
             public void handleMessage(Message msg) {
                 switch (msg.what) {
-                    case RECEIVER_SUCCESS:
+                    case Constant.RECEIVER_SUCCESS:
                         boolean isRefresh = msg.getData().getBoolean("isRefresh");
                         GankData gankData = (GankData)msg.getData().getSerializable("news");
                         List<NewsItem> newsItems = gankData.getResults();
