@@ -148,12 +148,9 @@ public class ListFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                         boolean isRefresh = msg.getData().getBoolean("isRefresh");
                         GankData gankData = (GankData)msg.getData().getSerializable("news");
                         List<NewsItem> newsItems = gankData.getResults();
-                        //加载最新数据还是添加老数据
                         if (isRefresh) {
-                          //更新数据源
                             adapter.updateData(newsItems);
                         }  else {
-                            //向数据源添加数据
                             adapter.addData(newsItems);
                         }
                         page++;

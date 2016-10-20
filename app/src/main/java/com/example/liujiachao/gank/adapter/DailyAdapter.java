@@ -41,12 +41,13 @@ public class DailyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
             String rawDate = newsItem.getPublishedAt();
             final String para_date = parseRawdate(rawDate);
+            final String pic_url = newsItem.getUrl();
 
             if (mOnItemClickListener != null) {
                 itemViewHolder.imageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mOnItemClickListener.onItemClick(itemViewHolder.itemView,para_date,position);
+                        mOnItemClickListener.onItemClick(itemViewHolder.itemView,para_date,pic_url,position);
                     }
                 });
             }
@@ -82,7 +83,7 @@ public class DailyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     public interface OnItemClickListener {
-        void onItemClick(View view,String date,int position);
+        void onItemClick(View view,String date,String pic_url,int position);
     }
 
     public void setmOnItemClickListener(OnItemClickListener mOnItemClickListener) {

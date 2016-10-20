@@ -57,9 +57,10 @@ public class DailyGankFragment extends Fragment implements OnLoadDataListener {
 
         adapter.setmOnItemClickListener(new DailyAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(View view, String date,int position) {
+            public void onItemClick(View view, String date,String pic_url,int position) {
                 Intent intent = new Intent(getActivity(), DailyContentActivity.class);
                 intent.putExtra("daily_date",date);
+                intent.putExtra("picture_url",pic_url);
                 startActivity(intent);
             }
         });
@@ -104,15 +105,12 @@ public class DailyGankFragment extends Fragment implements OnLoadDataListener {
             public void handleMessage(Message msg) {
                 switch (msg.what) {
                     case Constant.RECEIVER_SUCCESS:
-                        boolean isRefresh = msg.getData().getBoolean("isRefresh");
+                        boolean isRefresh = msg.getData().getBoolean("isRefresh");//这个刷新是点击刷新图标进行刷新
                         GankData gankData = (GankData)msg.getData().getSerializable("news");
                         List<NewsItem> newsItems = gankData.getResults();
-                        //加载最新数据还是添加老数据
                         if (isRefresh) {
-                            //更新数据源
                             adapter.updateData(newsItems);
                         }  else {
-                            //向数据源添加数据
                             adapter.addData(newsItems);
                         }
                         page++;

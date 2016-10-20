@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.example.liujiachao.gank.R;
@@ -19,7 +20,6 @@ public class HomeActivity extends AppCompatActivity {
     private static final int CATEGORY_FRAGMENT = 0X002;
     private static final int WELFARETAB_FRAGMENT = 0X003;
 
-    private Context mContext;
     private int mCurrentIndex;
 
     private RelativeLayout mDailyGankTab;
@@ -36,14 +36,37 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_layout);
-        mContext = this;
         mDailyGankTab = (RelativeLayout)findViewById(R.id.gank_daily);
         mCategoryTab = (RelativeLayout)findViewById(R.id.gank_category);
         mWelfareTab = (RelativeLayout)findViewById(R.id.gank_welfare);
         mFragmentManager = getSupportFragmentManager();
 
         setTabFragment(DAILY_FRAGMENT);
+        setUpListener();
 
+    }
+
+    private void setUpListener() {
+        mDailyGankTab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setTabFragment(DAILY_FRAGMENT);
+            }
+        });
+
+        mCategoryTab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setTabFragment(CATEGORY_FRAGMENT);
+            }
+        });
+
+        mWelfareTab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setTabFragment(WELFARETAB_FRAGMENT);
+            }
+        });
     }
 
     private void setTabFragment(int tab_index) {

@@ -5,8 +5,19 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.liujiachao.gank.R;
 import com.example.liujiachao.gank.entity.DailyData;
 import com.example.liujiachao.gank.entity.GankData;
@@ -14,9 +25,13 @@ import com.example.liujiachao.gank.entity.NewsItem;
 import com.example.liujiachao.gank.inteface.OnLoadDailyContentListener;
 import com.example.liujiachao.gank.inteface.OnLoadDataListener;
 import com.example.liujiachao.gank.util.Constant;
+import com.example.liujiachao.gank.util.Dater;
 import com.example.liujiachao.gank.util.NetworkUtils;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by evilchaos on 16/10/18.
@@ -24,21 +39,36 @@ import java.util.List;
 public class DailyContentActivity extends AppCompatActivity implements OnLoadDailyContentListener{
 
     private static Handler mHandler;
-
+    private Toolbar toolbar;
+    private ImageView imageView;
+    private LinearLayout llDailyContent;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent intent = getIntent();
-        String date = intent.getStringExtra("daily_date");
-
-        setContentView(R.layout.daily_content);
-        receiveData();
-        NetworkUtils.getDailyNews(date,this);
-
-
+        initViews();
     }
 
+    private void initViews() {
+        Intent intent = getIntent();
+        String date = intent.getStringExtra("daily_date");
+        String pic_url = intent.getStringExtra("picture_url");
 
+        setContentView(R.layout.daily_content);
+        imageView = (ImageView)findViewById(R.id.iv_content_pic);
+
+        llDailyContent = (LinearLayout)findViewById(R.id.daily_content);
+
+        toolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP);
+        getSupportActionBar().setHomeAsUpIndicator(getResources().getDrawable(R.drawable.back));
+
+        Glide.with(this).load(pic_url).diskCacheStrategy(DiskCacheStrategy.ALL)
+                .crossFade().into(imageView);
+
+        receiveData();
+        NetworkUtils.getDailyNews(date,this);
+    }
 
 
     private void receiveData() {
@@ -49,11 +79,40 @@ public class DailyContentActivity extends AppCompatActivity implements OnLoadDai
                     case Constant.RECEIVER_SUCCESS:
                         DailyData dailyData = (DailyData)msg.getData().getSerializable("news");
                         //绘制视图
-
+                        drawContentViews(dailyData);
                 }
                 super.handleMessage(msg);
             }
         };
+    }
+
+    private void drawContentViews(DailyData dailyData) {
+        List<String> categories = dailyData.getCategory();
+        Map<String,List<NewsItem> > results = dailyData.getResults();
+        for (String category : categories ) {
+            View tagView = LayoutInflater.from(this).inflate(R.layout.category_tag,null);
+            TextView tvTag =  (TextView)tagView.findViewById(R.id.tv_tag);
+            tvTag.setText(category);
+            llDailyContent.addView(tvTag);
+
+            List<NewsItem> itemList = results.get(category);
+            for (NewsItem item : itemList) {
+                addItemView(item);
+            }
+        }
+    }
+
+    private void addItemView(NewsItem item) {
+        View itemView = LayoutInflater.from(this).inflate(R.layout.news_item, null);
+        TextView title = (TextView)itemView.findViewById(R.id.title);
+        TextView time = (TextView)itemView.findViewById(R.id.tv_time);
+        TextView author = (TextView)itemView.findViewById(R.id.tv_author);
+        TextView tvCategory = (TextView)itemView.findViewById(R.id.tv_category);
+        title.setText(item.getDesc());
+        time.setText(Dater.parseTime(item.getPublishedAt()));
+        author.setText(item.getWho());
+        tvCategory.setText(item.getType());
+        llDailyContent.addView(itemView);
     }
 
     @Override
@@ -64,5 +123,14 @@ public class DailyContentActivity extends AppCompatActivity implements OnLoadDai
         bundle.putSerializable("news", dailyData);
         msg.setData(bundle);
         mHandler.sendMessage(msg);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
