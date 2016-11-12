@@ -16,4 +16,6 @@ public class Constant {
     public static final String TYPE = "type";
     public static final String PAGE = "page";
     public static final String POSITION = "position";
+
+    public final static int PAGE_SIZE = 20;
 }

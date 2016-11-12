@@ -30,7 +30,7 @@ public class NetworkUtils {
             @Override
             public void onError(Call call, Exception e, int id) {
                 if(System.currentTimeMillis() - lastTime < GET_DURATION) {
-                    requestData(type,page);
+                    requestData(type,page,this);
                 }
             }
 
@@ -41,7 +41,7 @@ public class NetworkUtils {
             }
         };
 
-        requestData(type,page);
+        requestData(type,page,callback);
 
     }
 
@@ -65,33 +65,36 @@ public class NetworkUtils {
                 listener.OnLoadDailyContentSuccess(response);
             }
         };
-        OkHttpUtils.get().url(GankApi.daily_url + date);
+        OkHttpUtils.get().url(GankApi.daily_url + date).build().execute(callback);
     }
 
-    public static void requestData(int type,int page) {
+    public static void requestData(int type,int page,Callback<GankData> callback) {
+        String get_url = null;
 
         switch (type) {
             case Constant.ANDORID_TYPE:
-                OkHttpUtils.get().url(GankApi.category_url + "Android/" + String.valueOf(pageSize) + "/" + String.valueOf(page));
+                get_url = GankApi.category_url + "Android/" + String.valueOf(pageSize) + "/" + String.valueOf(page);
                 break;
             case Constant.IOS_TYPE:
-                OkHttpUtils.get().url(GankApi.category_url + "iOS/" + String.valueOf(pageSize) + "/" + String.valueOf(page));
+                get_url = GankApi.category_url + "iOS/" + String.valueOf(pageSize) + "/" + String.valueOf(page);
                 break;
             case Constant.APP_TYPE:
-                OkHttpUtils.get().url(GankApi.category_url + "App/" + String.valueOf(pageSize) + "/" + String.valueOf(page));
+                get_url = GankApi.category_url + "App/" + String.valueOf(pageSize) + "/" + String.valueOf(page);
                 break;
             case Constant.EXTEND_TYPE:
-                OkHttpUtils.get().url(GankApi.category_url + "拓展资源/" + String.valueOf(pageSize) + "/" + String.valueOf(page));
+                get_url = GankApi.category_url + "拓展资源/" + String.valueOf(pageSize) + "/" + String.valueOf(page);
                 break;
             case Constant.REST_TYPE:
-                OkHttpUtils.get().url(GankApi.category_url + "休息视频/" + String.valueOf(pageSize) + "/" + String.valueOf(page));
+                get_url = GankApi.category_url + "休息视频/" + String.valueOf(pageSize) + "/" + String.valueOf(page);
                 break;
             case Constant.WEB_TYPE:
-                OkHttpUtils.get().url(GankApi.category_url + "前端/" + String.valueOf(pageSize) + "/" + String.valueOf(page));
+                get_url = GankApi.category_url + "前端/" + String.valueOf(pageSize) + "/" + String.valueOf(page);
                 break;
             case Constant.WELFARE_TYPE:
-                OkHttpUtils.get().url(GankApi.category_url + "福利/" + String.valueOf(pageSize) + "/" + String.valueOf(page));
+                get_url = GankApi.category_url + "福利/" + String.valueOf(pageSize) + "/" + String.valueOf(page);
+                break;
         }
+        OkHttpUtils.get().url(get_url).build().execute(callback);
     }
 
 }
