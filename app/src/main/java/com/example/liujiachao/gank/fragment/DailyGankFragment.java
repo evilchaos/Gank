@@ -12,10 +12,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.andbase.tractor.utils.LogUtils;
 import com.example.liujiachao.gank.R;
 
 import com.example.liujiachao.gank.activity.DailyContentActivity;
 import com.example.liujiachao.gank.adapter.BaseAdapter;
+import com.example.liujiachao.gank.adapter.CardAdapter;
 import com.example.liujiachao.gank.adapter.DailyAdapter;
 import com.example.liujiachao.gank.entity.GankData;
 import com.example.liujiachao.gank.entity.NewsItem;
@@ -23,18 +25,23 @@ import com.example.liujiachao.gank.http.BaseCallback;
 import com.example.liujiachao.gank.http.OkHttpUtils;
 import com.example.liujiachao.gank.util.Constant;
 import com.example.liujiachao.gank.util.GankApi;
+import com.huxq17.swipecardsview.SwipeCardsView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Request;
 import okhttp3.Response;
 
+import static android.R.id.list;
+
 public class DailyGankFragment extends Fragment  {
 
     private View mView;
-    private RecyclerView recyclerView;
+    private SwipeCardsView swipeCardsView;
     private LinearLayoutManager manager;
-    private DailyAdapter adapter;
+
+    private CardAdapter cardAdapter;
 
     private static final int STATE_NORMAL = 0;
     private static final int STATE_REFRESH = 1;
@@ -43,10 +50,12 @@ public class DailyGankFragment extends Fragment  {
     private int state = STATE_NORMAL;
 
     private int currPage = 1;
+
+    private int curIndex;
     private int lastPostion;
     private OkHttpUtils okHttpUtils = OkHttpUtils.getInstance();;
 
-    private List<NewsItem> newsItems;
+    private List<NewsItem> newsItems = new ArrayList<>();
 
     @Nullable
     @Override
@@ -64,17 +73,36 @@ public class DailyGankFragment extends Fragment  {
     }
 
     private void initViews() {
-        recyclerView = (RecyclerView)mView.findViewById(R.id.daily_recycle);
-        manager = new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false);
 
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        swipeCardsView = (SwipeCardsView) mView.findViewById(R.id.swipCardsView);
+        swipeCardsView.enableSwipe(true);
+        swipeCardsView.setCardsSlideListener(new SwipeCardsView.CardsSlideListener() {
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
+            public void onShow(int index) {
+                curIndex = index;
+                LogUtils.i("test showing index = " + index);
+            }
 
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    OnListScrolled();
+            //卡片滑动时回调
+            @Override
+            public void onCardVanish(int index, SwipeCardsView.SlideType type) {
+                if (curIndex == newsItems.size() - 1) {
+                    loadMoreData();
                 }
+            }
+
+            @Override
+            public void onItemClick(View cardImageView, int index) {
+                //toast("点击了 position=" + index);
+                NewsItem newsItem = newsItems.get(index);
+                final String para_date = parseRawDate(newsItem.getPublishedAt());
+                final String pic_url = newsItem.getUrl();
+
+                Intent intent = new Intent(getActivity(), DailyContentActivity.class);
+                intent.putExtra("daily_date",para_date);
+                intent.putExtra("picture_url",pic_url);
+                startActivity(intent);
+
             }
         });
 
@@ -125,8 +153,9 @@ public class DailyGankFragment extends Fragment  {
 
             @Override
             public void onSuccess(Response response, GankData gankData) {
-                newsItems = gankData.getResults();
-                showData();
+                List<NewsItem> mDatas  = gankData.getResults();
+                newsItems.addAll(mDatas);
+                show();
             }
 
             @Override
@@ -136,41 +165,61 @@ public class DailyGankFragment extends Fragment  {
         });
     }
 
-    private void showData() {
+    private void show() {
         switch (state) {
             case STATE_NORMAL:
-                adapter = new DailyAdapter(getContext(),newsItems);
-                adapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener(){
-                    @Override
-                    public void onItemClick(View view, int position) {
-                        NewsItem newsItem = adapter.getItem(position);
-                        final String para_date = parseRawDate(newsItem.getPublishedAt());
-                        final String pic_url = newsItem.getUrl();
-
-                        Intent intent = new Intent(getActivity(), DailyContentActivity.class);
-                        intent.putExtra("daily_date",para_date);
-                        intent.putExtra("picture_url",pic_url);
-                        startActivity(intent);
-
-                    }
-                });
-                recyclerView.setAdapter(adapter);
-                recyclerView.setLayoutManager(manager);
+                cardAdapter = new CardAdapter(newsItems,getContext());
+                swipeCardsView.setAdapter(cardAdapter);
                 break;
 
             case STATE_REFRESH:
-                adapter.clear();
-                adapter.addData(newsItems);
-                recyclerView.scrollToPosition(0);
+                cardAdapter.clear();
+                cardAdapter.setData(newsItems);
+                swipeCardsView.notifyDatasetChanged(0);
                 break;
 
             case STATE_MORE:
-                adapter.addData(adapter.getDatas().size(),newsItems);
-                recyclerView.scrollToPosition(adapter.getDatas().size());
+                cardAdapter.setData(newsItems);
+                swipeCardsView.notifyDatasetChanged(curIndex + 1);
                 break;
         }
-
     }
+
+//    private void showData() {
+//        switch (state) {
+//            case STATE_NORMAL:
+//                adapter = new DailyAdapter(getContext(),newsItems);
+//                adapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener(){
+//                    @Override
+//                    public void onItemClick(View view, int position) {
+//                        NewsItem newsItem = adapter.getItem(position);
+//                        final String para_date = parseRawDate(newsItem.getPublishedAt());
+//                        final String pic_url = newsItem.getUrl();
+//
+//                        Intent intent = new Intent(getActivity(), DailyContentActivity.class);
+//                        intent.putExtra("daily_date",para_date);
+//                        intent.putExtra("picture_url",pic_url);
+//                        startActivity(intent);
+//
+//                    }
+//                });
+//                recyclerView.setAdapter(adapter);
+//                recyclerView.setLayoutManager(manager);
+//                break;
+//
+//            case STATE_REFRESH:
+//                adapter.clear();
+//                adapter.addData(newsItems);
+//                recyclerView.scrollToPosition(0);
+//                break;
+//
+//            case STATE_MORE:
+//                adapter.addData(adapter.getDatas().size(),newsItems);
+//                recyclerView.scrollToPosition(adapter.getDatas().size());
+//                break;
+//        }
+//
+//    }
 
     private String parseRawDate(String rawDate) {
         String[] newStr = rawDate.split("T");
