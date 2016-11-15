@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -58,10 +59,10 @@ public class DailyContentActivity extends AppCompatActivity implements OnLoadDai
 
         llDailyContent = (LinearLayout)findViewById(R.id.daily_content);
 
-        toolbar = (Toolbar)findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP);
-        getSupportActionBar().setHomeAsUpIndicator(getResources().getDrawable(R.drawable.back));
+//        toolbar = (Toolbar)findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+//        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP);
+//        getSupportActionBar().setHomeAsUpIndicator(getResources().getDrawable(R.drawable.back));
 
         Glide.with(this).load(pic_url).diskCacheStrategy(DiskCacheStrategy.ALL)
                 .crossFade().into(imageView);

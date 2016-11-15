@@ -13,4 +13,8 @@
         <item name="android:windowIsTranslucent">false</item>
     </style>
 
+    <style name="NoActionBarTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowIsTranslucent">false</item>
+    </style>
+
 </resources>
