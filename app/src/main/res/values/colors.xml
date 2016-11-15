@@ -5,4 +5,5 @@
     <color name="colorAccent">#FF4081</color>
     <color name="backgroundYellow">#FFF7E243</color>
     <color name="lighter_gray">#ddd</color>
+    <color name="tab_indicator_color">#cc00</color>
 </resources>
