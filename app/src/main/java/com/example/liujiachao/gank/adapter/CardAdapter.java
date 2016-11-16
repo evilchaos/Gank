@@ -52,7 +52,6 @@ public class CardAdapter extends BaseCardAdapter {
 
         ImageView imageView = (ImageView)cardview.findViewById(R.id.wel_pic);
         NewsItem newsItem = datas.get(position);
-        String url = newsItem.getUrl();
         Glide.with(mContext).load(newsItem.getUrl())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .crossFade().into(imageView);

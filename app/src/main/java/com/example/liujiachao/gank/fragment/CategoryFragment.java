@@ -57,13 +57,6 @@ public class CategoryFragment extends Fragment {
         titles.add("休息视频");
         titles.add("拓展资源");
 
-//        mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(0)));
-//        mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(1)));
-//        mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(2)));
-//        mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(3)));
-//        mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(4)));
-//        mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(5)));
-
         List<Fragment> fragments = new ArrayList<>();
 
         fragments.add(ListFragment.newInstance(Constant.IOS_TYPE));
