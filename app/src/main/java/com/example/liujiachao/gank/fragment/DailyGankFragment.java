@@ -1,12 +1,15 @@
 package com.example.liujiachao.gank.fragment;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.andbase.tractor.utils.LogUtils;
 import com.example.liujiachao.gank.R;
@@ -34,6 +37,8 @@ public class DailyGankFragment extends Fragment  {
     private View mView;
     private SwipeCardsView swipeCardsView;
     private CardAdapter cardAdapter;
+    private TextView tvDaily;
+    private ImageView imageView;
 
     private static final int STATE_NORMAL = 0;
     private static final int STATE_REFRESH = 1;
@@ -59,6 +64,18 @@ public class DailyGankFragment extends Fragment  {
     }
 
     private void initViews() {
+
+        tvDaily = (TextView)mView.findViewById(R.id.tv_daily);
+        Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(),"fonts/Pacifico.ttf");
+        tvDaily.setTypeface(typeface);
+
+        imageView = (ImageView)mView.findViewById(R.id.iv_refresh);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refreshData();
+            }
+        });
 
         swipeCardsView = (SwipeCardsView) mView.findViewById(R.id.swipCardsView);
         swipeCardsView.enableSwipe(true);

@@ -4,8 +4,7 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/white"
-    android:padding="10dp"
+    android:padding="8dp"
     >
 
     <ImageView
@@ -30,7 +29,7 @@
             android:textColor="@android:color/black"
             android:text="测试专用语句"
             android:textSize="12sp"
-            android:layout_alignParentTop="true"
+            android:layout_marginBottom="10dp"
             />
 
         <RelativeLayout
@@ -59,13 +58,26 @@
                 android:layout_marginRight="12dp"
                 />
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id= "@+id/iv_pen"
+                android:layout_toRightOf="@id/tv_author"
+                android:layout_marginRight="3dp"
+                android:src="@drawable/pen"
+                android:layout_alignBottom="@+id/tv_author"
+                android:layout_alignTop="@+id/tv_author"
+
+                />
+
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id = "@+id/tv_category"
                 android:textSize="10sp"
                 android:text="Android"
-                android:layout_toRightOf="@+id/tv_author"
+                android:layout_toRightOf="@+id/iv_pen"
                 />
 
 

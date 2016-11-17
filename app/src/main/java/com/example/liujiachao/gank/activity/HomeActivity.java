@@ -1,5 +1,6 @@
 package com.example.liujiachao.gank.activity;
 
+import android.graphics.Typeface;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -33,7 +34,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void initTab() {
-        Tab tab_dailygank = new Tab("每日一干",DailyGankFragment.class);
+        Tab tab_dailygank = new Tab("每日干货",DailyGankFragment.class);
         Tab tab_category = new Tab("干货分类",CategoryFragment.class);
         Tab tab_welfare = new Tab("每日福利",WelfareFragment.class);
 
@@ -57,6 +58,8 @@ public class HomeActivity extends AppCompatActivity {
     private View buildIndicator(Tab tab) {
         View view = mInflater.inflate(R.layout.tab_indicator,null);
         TextView textIndicator = (TextView)view.findViewById(R.id.txt_indicator);
+//        Typeface typeface = Typeface.createFromAsset(getAssets(),"Bangers.ttf");
+//        textIndicator.setTypeface(typeface);
         textIndicator.setText(tab.getTitle());
 
         return view;

@@ -9,13 +9,38 @@
         android:layout_height="45dp"
         >
 
+        <ImageView
+            android:layout_alignTop="@+id/tv_daily"
+            android:layout_alignBottom="@+id/tv_daily"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="10dp"
+            android:id ="@+id/iv_setting"
+            android:src = "@drawable/setting"
+            />
+
+
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="每日一Gank"
+            android:text="Daily Gank"
             android:textColor="@android:color/black"
             android:layout_centerInParent="true"
-            android:textSize="15sp"
+            android:textSize="20sp"
+            android:id = "@+id/tv_daily"
+            />
+
+        <ImageView
+            android:layout_alignTop="@+id/tv_daily"
+            android:layout_alignBottom="@+id/tv_daily"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:id ="@+id/iv_refresh"
+            android:src = "@drawable/refresh"
             />
 
     </RelativeLayout>

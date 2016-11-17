@@ -1,6 +1,7 @@
 package com.example.liujiachao.gank.fragment;
 
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 
 import android.support.design.widget.TabLayout;
@@ -9,6 +10,8 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TabHost;
+import android.widget.TextView;
 
 import com.example.liujiachao.gank.R;
 import com.example.liujiachao.gank.adapter.MyFragmentAdapter;
@@ -26,6 +29,7 @@ public class CategoryFragment extends Fragment {
     private ViewPager viewPager;
     private TabLayout mTabLayout;
     private View mView;
+    private TextView titleCategory;
 
     @Nullable
     @Override
@@ -44,6 +48,9 @@ public class CategoryFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        titleCategory = (TextView)mView.findViewById(R.id.title_category);
+        Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(),"fonts/Pacifico.ttf");
+        titleCategory.setTypeface(typeface);
         setupViewPager();
     }
 
@@ -72,6 +79,8 @@ public class CategoryFragment extends Fragment {
         mTabLayout.setupWithViewPager(viewPager);
         mTabLayout.setTabsFromPagerAdapter(adapter);
         mTabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+
+
     }
 
     @Override
