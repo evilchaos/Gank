@@ -21,65 +21,15 @@ import java.util.concurrent.ExecutionException;
 /**
  * Created by liujiachao on 2016/10/16.
  */
-public class WelfareAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+public class WelfareAdapter extends SimpleAdapter<NewsItem>{
 
-    private Context mContext;
-    private List<NewsItem> pictures = new ArrayList<>();
-
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        mContext = parent.getContext();
-        View view = LayoutInflater.from(mContext).inflate(R.layout.grid_item,parent,false);
-        return new ImageViewHolder(view);
+    public WelfareAdapter(Context context, List<NewsItem> datas) {
+        super(context,R.layout.grid_item,datas);
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (holder instanceof ImageViewHolder) {
-            ImageViewHolder imageViewHolder = (ImageViewHolder)holder;
-            try {
-                 Bitmap bitmap = Glide.with(mContext).load(pictures.get(position).getUrl())
-                        .asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .into(com.bumptech.glide.request.target.Target.SIZE_ORIGINAL, com.bumptech.glide.request.target.Target.SIZE_ORIGINAL)
-                        .get();
-
-                imageViewHolder.imageView.setOriginalSize(bitmap.getWidth(),bitmap.getHeight());
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            }
-            Glide.with(mContext).load(pictures.get(position).getUrl())
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .crossFade().into(imageViewHolder.imageView);
-
-        }
-
+    public void bindData(BaseViewHolder viewHolder, NewsItem newsItem) {
+        Glide.with(mContext).load(newsItem.getUrl()).diskCacheStrategy(DiskCacheStrategy.ALL)
+                .crossFade().into(viewHolder.getImageView(R.id.iv_item));
     }
-
-    @Override
-    public int getItemCount() {
-        return pictures.size();
-    }
-
-    public void updateData(List<NewsItem> items) {
-        pictures.clear();
-        addData(items);
-    }
-
-    public void addData(List<NewsItem> items) {
-        pictures.addAll(items);
-        notifyDataSetChanged();
-    }
-
-
-    public class ImageViewHolder extends RecyclerView.ViewHolder {
-        public RatioImageView imageView;
-
-        public ImageViewHolder(View itemView) {
-            super(itemView);
-            imageView = (RatioImageView)itemView.findViewById(R.id.image);
-        }
-    }
-
 }
