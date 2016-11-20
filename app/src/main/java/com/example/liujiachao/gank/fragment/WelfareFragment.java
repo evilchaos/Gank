@@ -26,6 +26,7 @@ import com.example.liujiachao.gank.entity.NewsItem;
 import com.example.liujiachao.gank.http.BaseCallback;
 import com.example.liujiachao.gank.http.OkHttpUtils;
 import com.example.liujiachao.gank.inteface.OnLoadDataListener;
+import com.example.liujiachao.gank.inteface.OnLoadImageUrlSuccess;
 import com.example.liujiachao.gank.util.Constant;
 import com.example.liujiachao.gank.util.GankApi;
 import com.example.liujiachao.gank.util.NetworkUtils;
@@ -41,7 +42,7 @@ import okhttp3.Response;
 /**
  * Created by liujiachao on 2016/10/8.
  */
-public class WelfareFragment extends Fragment {
+public class WelfareFragment extends Fragment{
     private OkHttpUtils okHttpUtils = OkHttpUtils.getInstance();
 
     private final static int STATE_NORMAL = 0;
@@ -167,4 +168,6 @@ public class WelfareFragment extends Fragment {
         state = STATE_MORE;
         getData();
     }
+
+
 }

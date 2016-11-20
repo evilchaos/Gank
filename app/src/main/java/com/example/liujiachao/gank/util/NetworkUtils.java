@@ -19,31 +19,7 @@ public class NetworkUtils {
     public static final int GET_DURATION = 2000;
     public static long lastTime;
 
-    public static void getGankNews(final int type ,final int page,final boolean isRefresh,final OnLoadDataListener listener) {
-        lastTime = System.currentTimeMillis();
-        final Callback<GankData> callback = new Callback<GankData>() {
-            @Override
-            public GankData parseNetworkResponse(Response response, int id) throws Exception {
-                return Json.parseGankNews(response.body().string());
-            }
 
-            @Override
-            public void onError(Call call, Exception e, int id) {
-                if(System.currentTimeMillis() - lastTime < GET_DURATION) {
-                    requestData(type,page,this);
-                }
-            }
-
-            @Override
-            public void onResponse(GankData response, int id) {
-                listener.OnLoadDataSuccess(type,isRefresh,response);
-
-            }
-        };
-
-        requestData(type,page,callback);
-
-    }
 
     public static void getDailyNews(final String date, final OnLoadDailyContentListener listener) {
         lastTime = System.currentTimeMillis();

@@ -1,15 +1,35 @@
 package com.example.liujiachao.gank.entity;
 
+import java.io.Serializable;
+
 /**
  * Created by liujiachao on 2016/10/12.
  */
-public class NewsItem {
+public class NewsItem implements Serializable {
     String _id;
     String desc;
     String publishedAt;
     String type;
     String url;
     String who;
+    int width;
+    int height;
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
 
     public String get_id() {
         return _id;
