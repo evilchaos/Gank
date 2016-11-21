@@ -7,12 +7,15 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.Target;
 import com.example.liujiachao.gank.entity.NewsItem;
+import com.example.liujiachao.gank.fragment.WelfareFragment;
 import com.example.liujiachao.gank.inteface.OnLoadImageUrlSuccess;
+import com.example.liujiachao.gank.util.Constant;
 
 import java.io.Serializable;
 import java.util.List;
@@ -24,18 +27,16 @@ import java.util.concurrent.ExecutionException;
 
 public class DataService extends IntentService {
 
-    public static Handler mHandler = new Handler(Looper.getMainLooper());
-    private static Context mContxext;
 
     public DataService() {
         super("");
     }
 
     public static void startService(Context context, List<NewsItem> datas) {
-        mContxext = context;
         Intent intent = new Intent(context,DataService.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("newsItemList",(Serializable) datas);
+        intent.putExtras(bundle);
         context.startService(intent);
     }
 
@@ -45,10 +46,8 @@ public class DataService extends IntentService {
             return;
         }
 
-        List<NewsItem> newsItemList = (List<NewsItem>) intent.getSerializableExtra("newsItemList");
-        handleNewsItem(newsItemList);
-
-
+        List<NewsItem> newsItems = (List<NewsItem>)intent.getExtras().getSerializable("newsItemList");
+        handleNewsItem(newsItems);
     }
 
     private void handleNewsItem(final List<NewsItem> newsItemList) {
@@ -72,11 +71,11 @@ public class DataService extends IntentService {
             }
         }
 
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-
-            }
-        });
+        Message msg = Message.obtain();
+        msg.what = Constant.RECEIVER_SUCCESS;
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("image_data",(Serializable) newsItemList);
+        msg.setData(bundle);
+        WelfareFragment.mHandler.sendMessage(msg);
     }
 }

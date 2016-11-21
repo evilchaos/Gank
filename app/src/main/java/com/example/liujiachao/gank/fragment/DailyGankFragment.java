@@ -3,7 +3,6 @@ package com.example.liujiachao.gank.fragment;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,6 +37,7 @@ public class DailyGankFragment extends Fragment  {
     private SwipeCardsView swipeCardsView;
     private CardAdapter cardAdapter;
     private TextView tvDaily;
+    private ImageView iv_retry;
     private ImageView imageView;
 
     private static final int STATE_NORMAL = 0;
@@ -50,15 +50,14 @@ public class DailyGankFragment extends Fragment  {
 
     private List<NewsItem> newsItems = new ArrayList<>();
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater,  ViewGroup container,  Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.daily_layout,container,false);
         return mView;
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    public void onActivityCreated( Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initViews();
     }
@@ -66,6 +65,15 @@ public class DailyGankFragment extends Fragment  {
     private void initViews() {
 
         tvDaily = (TextView)mView.findViewById(R.id.tv_daily);
+        iv_retry = (ImageView) mView.findViewById(R.id.iv_retry);
+
+        iv_retry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                doRetry();
+            }
+        });
+
         Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(),"fonts/Pacifico.ttf");
         tvDaily.setTypeface(typeface);
 
@@ -107,6 +115,10 @@ public class DailyGankFragment extends Fragment  {
             }
         });
         getData();
+    }
+
+    public void doRetry() {
+        refreshData();
     }
 
     //刷新数据，点击右上角按钮会被调用

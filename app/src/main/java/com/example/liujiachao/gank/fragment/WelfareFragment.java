@@ -4,11 +4,8 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
@@ -19,18 +16,15 @@ import android.widget.TextView;
 import com.cjj.MaterialRefreshLayout;
 import com.cjj.MaterialRefreshListener;
 import com.example.liujiachao.gank.R;
-import com.example.liujiachao.gank.adapter.GankAdapter;
 import com.example.liujiachao.gank.adapter.WelfareAdapter;
 import com.example.liujiachao.gank.entity.GankData;
 import com.example.liujiachao.gank.entity.NewsItem;
 import com.example.liujiachao.gank.http.BaseCallback;
 import com.example.liujiachao.gank.http.OkHttpUtils;
-import com.example.liujiachao.gank.inteface.OnLoadDataListener;
-import com.example.liujiachao.gank.inteface.OnLoadImageUrlSuccess;
+import com.example.liujiachao.gank.service.DataService;
 import com.example.liujiachao.gank.util.Constant;
 import com.example.liujiachao.gank.util.GankApi;
-import com.example.liujiachao.gank.util.NetworkUtils;
-import com.example.liujiachao.gank.widget.DividerItemDecoration;
+
 import com.example.liujiachao.gank.widget.GridSpacingItemDecoration;
 
 import java.util.ArrayList;
@@ -60,7 +54,8 @@ public class WelfareFragment extends Fragment{
     private int pageSize = 20;
     private int currPage = 1;
     private List<NewsItem> newsItems = new ArrayList<>();
-    @Nullable
+    public static Handler mHandler ;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.welfare_layout,container,false);
@@ -120,7 +115,9 @@ public class WelfareFragment extends Fragment{
             @Override
             public void onSuccess(Response response, GankData gankData) {
                 newsItems = gankData.getResults();
-                showData();
+                receiveData();
+                DataService.startService(getActivity(),newsItems);
+                //showData();
             }
 
             @Override
@@ -129,6 +126,20 @@ public class WelfareFragment extends Fragment{
             }
         });
 
+    }
+
+    private void receiveData() {
+        mHandler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                switch (msg.what) {
+                    case Constant.RECEIVER_SUCCESS:
+                        newsItems = (List<NewsItem>)msg.getData().getSerializable("image_data");
+                        showData();
+                }
+                super.handleMessage(msg);
+            }
+        };
     }
 
     private void showData() {

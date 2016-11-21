@@ -12,7 +12,7 @@
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="310dp"
             android:id = "@+id/iv_content_pic"
             android:scaleType="centerCrop"
             app:layout_collapseMode="parallax"

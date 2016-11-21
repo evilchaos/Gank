@@ -29,7 +29,9 @@ public class WelfareAdapter extends SimpleAdapter<NewsItem>{
 
     @Override
     public void bindData(BaseViewHolder viewHolder, NewsItem newsItem) {
+        RatioImageView ratioImageView = (RatioImageView)viewHolder.getView(R.id.iv_item);
+        ratioImageView.setOriginalSize(newsItem.getWidth(),newsItem.getHeight());
         Glide.with(mContext).load(newsItem.getUrl()).diskCacheStrategy(DiskCacheStrategy.ALL)
-                .crossFade().into(viewHolder.getImageView(R.id.iv_item));
+                .crossFade().into(ratioImageView);
     }
 }

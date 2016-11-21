@@ -1,13 +1,16 @@
 package com.example.liujiachao.gank.adapter;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.liujiachao.gank.R;
 import com.example.liujiachao.gank.entity.NewsItem;
+import com.example.liujiachao.gank.util.Dater;
 import com.huxq17.swipecardsview.BaseCardAdapter;
 
 import java.util.List;
@@ -51,10 +54,18 @@ public class CardAdapter extends BaseCardAdapter {
         }
 
         ImageView imageView = (ImageView)cardview.findViewById(R.id.wel_pic);
+        TextView tv_carddate = (TextView)cardview.findViewById(R.id.card_date);
+        TextView tv_cardauthor = (TextView)cardview.findViewById(R.id.card_author);
         NewsItem newsItem = datas.get(position);
         Glide.with(mContext).load(newsItem.getUrl())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .crossFade().into(imageView);
 
+        String time = Dater.getDate(newsItem.getPublishedAt());
+        Typeface typeface = Typeface.createFromAsset(mContext.getAssets(),"fonts/Pacifico.ttf");
+        tv_carddate.setText(time);
+        tv_cardauthor.setText(newsItem.getWho());
+        tv_carddate.setTypeface(typeface);
+        tv_cardauthor.setTypeface(typeface);
     }
 }

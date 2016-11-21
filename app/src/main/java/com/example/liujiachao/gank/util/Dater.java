@@ -33,6 +33,12 @@ public class Dater {
         }
     }
 
+    public static String getDate(String time) {
+        String[] newStr = time.split("T");
+        String publishDate = newStr[0];
+        return publishDate;
+    }
+
     public static int getDaysBetweenDates(String first, String second) {
         Date d1 = getFormatDateTime(first,DATE_FORMAT);
         Date d2 = getFormatDateTime(second,DATE_FORMAT);

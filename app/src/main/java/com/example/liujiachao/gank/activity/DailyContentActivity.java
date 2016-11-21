@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -29,7 +28,6 @@ import com.example.liujiachao.gank.util.Constant;
 import com.example.liujiachao.gank.util.Dater;
 import com.example.liujiachao.gank.util.NetworkUtils;
 
-import org.w3c.dom.Text;
 
 import java.util.List;
 import java.util.Map;
@@ -40,11 +38,10 @@ import java.util.Map;
 public class DailyContentActivity extends AppCompatActivity implements OnLoadDailyContentListener{
 
     private static Handler mHandler;
-    private Toolbar toolbar;
     private ImageView imageView;
     private LinearLayout llDailyContent;
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initViews();
     }
@@ -56,13 +53,7 @@ public class DailyContentActivity extends AppCompatActivity implements OnLoadDai
 
         setContentView(R.layout.daily_content);
         imageView = (ImageView)findViewById(R.id.iv_content_pic);
-
         llDailyContent = (LinearLayout)findViewById(R.id.daily_content);
-
-//        toolbar = (Toolbar)findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-//        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP);
-//        getSupportActionBar().setHomeAsUpIndicator(getResources().getDrawable(R.drawable.back));
 
         Glide.with(this).load(pic_url).diskCacheStrategy(DiskCacheStrategy.ALL)
                 .crossFade().into(imageView);
