@@ -1,5 +1,7 @@
 package com.example.liujiachao.gank.fragment;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -40,6 +42,8 @@ public class DailyGankFragment extends Fragment  {
     private ImageView iv_retry;
     private ImageView imageView;
 
+    private ValueAnimator anim;
+
     private static final int STATE_NORMAL = 0;
     private static final int STATE_REFRESH = 1;
     private static final int STATE_MORE = 2;
@@ -70,7 +74,7 @@ public class DailyGankFragment extends Fragment  {
         iv_retry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                doRetry();
+
             }
         });
 
@@ -81,7 +85,11 @@ public class DailyGankFragment extends Fragment  {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                refreshData();
+                anim = ObjectAnimator.ofFloat(imageView,"rotation",0,360);
+                anim.setRepeatCount(ValueAnimator.INFINITE);
+                anim.setRepeatMode(ValueAnimator.RESTART);
+                anim.start();
+                doRetry();
             }
         });
 
@@ -151,8 +159,7 @@ public class DailyGankFragment extends Fragment  {
 
             @Override
             public void onSuccess(Response response, GankData gankData) {
-                List<NewsItem> mDatas  = gankData.getResults();
-                newsItems.addAll(mDatas);
+                newsItems  = gankData.getResults();
                 show();
             }
 
@@ -174,6 +181,7 @@ public class DailyGankFragment extends Fragment  {
                 cardAdapter.clear();
                 cardAdapter.setData(newsItems);
                 swipeCardsView.notifyDatasetChanged(0);
+                anim.end();
                 break;
 
             case STATE_MORE:
