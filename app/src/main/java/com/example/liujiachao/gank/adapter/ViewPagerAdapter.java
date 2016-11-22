@@ -16,6 +16,7 @@ import com.example.liujiachao.gank.entity.NewsItem;
 import java.util.ArrayList;
 import java.util.List;
 
+import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
 /**
@@ -23,7 +24,6 @@ import uk.co.senab.photoview.PhotoViewAttacher;
  */
 
 public class ViewPagerAdapter extends PagerAdapter {
-
 
     private Context context;
     private List<NewsItem> newsItems = new ArrayList<>();
@@ -37,16 +37,16 @@ public class ViewPagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         mView = LayoutInflater.from(context).inflate(R.layout.item_image,container,false);
-        final ImageView image = (ImageView)mView.findViewById(R.id.galary_image);
-        final PhotoViewAttacher photoViewAttacher = new PhotoViewAttacher(image);
+        final PhotoView photoView = (PhotoView) mView.findViewById(R.id.galary_image);
+
 
         Glide.with(context).load(newsItems.get(position).getUrl())
-                .into(image);
+                .into(photoView);
 
-        photoViewAttacher.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
+        photoView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
             @Override
             public void onPhotoTap(View view, float x, float y) {
-                Activity activity = (Activity) context;
+                Activity activity = (Activity)context;
                 activity.finish();
             }
         });

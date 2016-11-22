@@ -1,6 +1,7 @@
 package com.example.liujiachao.gank.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -94,7 +95,7 @@ public class DailyContentActivity extends AppCompatActivity implements OnLoadDai
         }
     }
 
-    private void addItemView(NewsItem item) {
+    private void addItemView(final NewsItem item) {
         View itemView = LayoutInflater.from(this).inflate(R.layout.news_item, null);
         TextView title = (TextView)itemView.findViewById(R.id.title);
         TextView time = (TextView)itemView.findViewById(R.id.tv_time);
@@ -104,6 +105,16 @@ public class DailyContentActivity extends AppCompatActivity implements OnLoadDai
         time.setText(Dater.parseTime(item.getPublishedAt()));
         author.setText(item.getWho());
         tvCategory.setText(item.getType());
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String url = item.getUrl();
+                Uri uri = Uri.parse(url);
+                Intent intent = new Intent(Intent.ACTION_VIEW,uri);
+                startActivity(intent);
+            }
+        });
+
         llDailyContent.addView(itemView);
     }
 

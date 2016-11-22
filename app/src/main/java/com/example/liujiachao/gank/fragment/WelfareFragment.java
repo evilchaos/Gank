@@ -1,5 +1,6 @@
 package com.example.liujiachao.gank.fragment;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,6 +17,8 @@ import android.widget.TextView;
 import com.cjj.MaterialRefreshLayout;
 import com.cjj.MaterialRefreshListener;
 import com.example.liujiachao.gank.R;
+import com.example.liujiachao.gank.activity.PictureActivity;
+import com.example.liujiachao.gank.adapter.BaseAdapter;
 import com.example.liujiachao.gank.adapter.WelfareAdapter;
 import com.example.liujiachao.gank.entity.GankData;
 import com.example.liujiachao.gank.entity.NewsItem;
@@ -27,6 +30,7 @@ import com.example.liujiachao.gank.util.GankApi;
 
 import com.example.liujiachao.gank.widget.GridSpacingItemDecoration;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -146,6 +150,19 @@ public class WelfareFragment extends Fragment{
         switch (state) {
             case STATE_NORMAL:
                 adapter = new WelfareAdapter(getContext(),newsItems);
+
+                adapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Intent intent = new Intent(getActivity(),PictureActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("position",position);
+                        bundle.putSerializable("pic_urls",(Serializable) newsItems);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                    }
+                });
+
                 mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
                 mRecyclerView.setAdapter(adapter);
                 mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(2,10,true));

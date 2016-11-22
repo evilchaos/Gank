@@ -1,6 +1,8 @@
 package com.example.liujiachao.gank.fragment;
 
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -17,6 +19,7 @@ import android.view.ViewGroup;
 import com.cjj.MaterialRefreshLayout;
 import com.cjj.MaterialRefreshListener;
 import com.example.liujiachao.gank.R;
+import com.example.liujiachao.gank.adapter.BaseAdapter;
 import com.example.liujiachao.gank.adapter.GankAdapter;
 import com.example.liujiachao.gank.entity.GankData;
 import com.example.liujiachao.gank.entity.NewsItem;
@@ -161,6 +164,15 @@ public class ListFragment extends Fragment {
         switch (state) {
             case STATE_NORMAL:
                 adapter = new GankAdapter(getContext(),newsItems);
+                adapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        String url = newsItems.get(position).getUrl();
+                        Uri uri = Uri.parse(url);
+                        Intent intent = new Intent(Intent.ACTION_VIEW,uri);
+                        startActivity(intent);
+                    }
+                });
                 recyclerView.setAdapter(adapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                 recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL_LIST));

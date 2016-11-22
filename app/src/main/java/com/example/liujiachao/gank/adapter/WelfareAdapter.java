@@ -33,5 +33,7 @@ public class WelfareAdapter extends SimpleAdapter<NewsItem>{
         ratioImageView.setOriginalSize(newsItem.getWidth(),newsItem.getHeight());
         Glide.with(mContext).load(newsItem.getUrl()).diskCacheStrategy(DiskCacheStrategy.ALL)
                 .crossFade().into(ratioImageView);
+
+
     }
 }

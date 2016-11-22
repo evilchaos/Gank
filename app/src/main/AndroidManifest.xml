@@ -21,6 +21,10 @@
         <activity android:name=".activity.DailyContentActivity">
         </activity>
 
+        <activity android:name=".activity.PictureActivity">
+
+        </activity>
+
         <service android:name=".service.DataService"/>
     </application>
 
