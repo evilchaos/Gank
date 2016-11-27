@@ -16,6 +16,7 @@ import com.andbase.tractor.utils.LogUtils;
 import com.example.liujiachao.gank.R;
 
 import com.example.liujiachao.gank.activity.DailyContentActivity;
+import com.example.liujiachao.gank.activity.SettingActivity;
 import com.example.liujiachao.gank.adapter.CardAdapter;
 import com.example.liujiachao.gank.entity.GankData;
 import com.example.liujiachao.gank.entity.NewsItem;
@@ -39,7 +40,7 @@ public class DailyGankFragment extends Fragment  {
     private SwipeCardsView swipeCardsView;
     private CardAdapter cardAdapter;
     private TextView tvDaily;
-    private ImageView iv_retry;
+    private ImageView ivSetting;
     private ImageView imageView;
 
     private ValueAnimator anim;
@@ -69,11 +70,13 @@ public class DailyGankFragment extends Fragment  {
     private void initViews() {
 
         tvDaily = (TextView)mView.findViewById(R.id.tv_daily);
-        iv_retry = (ImageView) mView.findViewById(R.id.iv_retry);
+        ivSetting = (ImageView) mView.findViewById(R.id.iv_setting);
 
-        iv_retry.setOnClickListener(new View.OnClickListener() {
+        ivSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(getActivity(),SettingActivity.class);
+                startActivity(intent);
 
             }
         });

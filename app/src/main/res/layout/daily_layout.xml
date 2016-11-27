@@ -15,8 +15,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:id ="@+id/iv_retry"
-            android:src = "@drawable/retry48"
+            android:id ="@+id/iv_setting"
+            android:layout_marginLeft="10dp"
+            android:src = "@drawable/setting24"
             />
 
 
